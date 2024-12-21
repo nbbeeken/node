@@ -260,6 +260,13 @@ inline v8::Local<v8::Object> ERR_STRING_TOO_LONG(v8::Isolate* isolate) {
                                               prefix " must be a buffer");   \
   } while (0)
 
+#define THROW_AND_RETURN_IF_NOT_UINT8ARRAY(env, val, prefix)                   \
+  do {                                                                         \
+    if (!val->IsUint8Array())                                                  \
+      return node::THROW_ERR_INVALID_ARG_TYPE(env,                             \
+                                              prefix " must be a Uint8Array"); \
+  } while (0)
+
 #define THROW_AND_RETURN_IF_NOT_STRING(env, val, prefix)                     \
   do {                                                                       \
     if (!val->IsString())                                                    \
