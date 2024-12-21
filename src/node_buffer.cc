@@ -41,8 +41,16 @@
 #include <cstring>
 #include "nbytes.h"
 
-#define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
-  THROW_AND_RETURN_IF_NOT_BUFFER(env, obj, "argument")                      \
+// TODO(nbbeeken): There are still 15 instances of
+// THROW_AND_RETURN_UNLESS_BUFFER that probably should be switched over But they
+// aren't crashing my tests, so need to figure out why the coverage isn't there
+// first...
+
+#define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                               \
+  THROW_AND_RETURN_IF_NOT_BUFFER(env, obj, "argument")
+
+#define THROW_AND_RETURN_UNLESS_UINT8ARRAY(env, obj)                           \
+  THROW_AND_RETURN_IF_NOT_UINT8ARRAY(env, obj, "argument")
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
@@ -1467,7 +1475,7 @@ template <encoding encoding>
 void SlowWriteString(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
-  THROW_AND_RETURN_UNLESS_BUFFER(env, args[0]);
+  THROW_AND_RETURN_UNLESS_UINT8ARRAY(env, args[0]);
   SPREAD_BUFFER_ARG(args[0], ts_obj);
 
   THROW_AND_RETURN_IF_NOT_STRING(env, args[1], "argument");
